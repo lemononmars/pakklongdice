@@ -132,10 +132,10 @@ io.on('connection', function(socket){
           dice_set = [t,t,t]; break;
         case 2: 
           var t1 = Math.floor(Math.random()*3)
-          var t2 = t1+1
+          var t2 = (t1+1)%3
           dice_set = [t1,t1,t1,t2,t2]; break;
         case 3: dice_set = [0,0,0,1,1,1,2,2,2]; break;
-        default: dice_set = [0,0,0,1,1,1,2,2,2,3,3,3]; break;
+        default: dice_set = [0,0,0,1,1,1,2,2,2,3,3,3]; break; // for advanced mode
     }
 
     flowers = []
@@ -197,13 +197,16 @@ io.on('connection', function(socket){
 
     // the faster, the better!
     if(correct_players.length > 0){
-      var fastest = correct_players[0][1]
+      correct_players.sort(function(first, second){
+        return first[1] - second[1]
+      });
+      var fastest_time = correct_players[0][1]
       // for solo mode, start from 0
       if(socket.gameState.solo)
         fastest = socket.gameState.round_start_time
       for (cp in correct_players){
         // 1 second late (1000 millisecond) = 10 points off
-        var bonus = 100 + Math.floor((fastest - correct_players[cp][1])/100);
+        var bonus = 100 + Math.floor((fastest_time - correct_players[cp][1])/100);
         socket.gameState.player_scores[correct_players[cp][0]] += bonus
       }
     }
