@@ -127,8 +127,13 @@ io.on('connection', function(socket){
     dice_set = []
     diff = parseInt(socket.gameState.difficulty)
     switch(diff){
-        case 1: dice_set = [0,0,0]; break;
-        case 2: dice_set = [0,0,0,1,1]; break;
+        case 1: 
+          var t = Math.floor(Math.random()*3)
+          dice_set = [t,t,t]; break;
+        case 2: 
+          var t1 = Math.floor(Math.random()*3)
+          var t2 = t1+1
+          dice_set = [t1,t1,t1,t2,t2]; break;
         case 3: dice_set = [0,0,0,1,1,1,2,2,2]; break;
         default: dice_set = [0,0,0,1,1,1,2,2,2,3,3,3]; break;
     }

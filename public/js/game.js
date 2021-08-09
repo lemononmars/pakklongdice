@@ -5,6 +5,7 @@ var myUsername = ''
 var socket = io();
 var isPlaying = false;
 var difficulty_str = ['easy', 'medium', 'hard']
+var random_names = ['Rose', 'Orchid', 'Dandelion', 'Azalea', 'Jasmine', 'Lily', 'Acacia', 'Violet']
 
 // variables for timer
 var t = 0
@@ -15,9 +16,8 @@ var percentage = 100;
 $(document).ready(function(){
    // initialize
    randomID = Math.floor(Math.random()*10000)
-   IDLen = Math.floor(Math.log10(randomID))+1
-   IDString = '0000'.slice(IDLen) + String(randomID)
-   myUsername = 'Florist' + IDString
+   IDString = '0000'.slice(String(randomID).length) + String(randomID)
+   myUsername = random_names[Math.floor(Math.random()*random_names.length)] + IDString
 
    $('#username').val(myUsername)
    socket.emit('add user', {'userID': randomID, 'username': myUsername})
