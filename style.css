@@ -1,0 +1,684 @@
+body {
+	background-color: #d3e5e5;
+}
+
+h1 {
+    color: navy;
+    text-align: center
+}
+
+table {
+	border: none;
+	text-align: center;
+	padding: 2px;
+	border-spacing: 2px;
+}
+
+/***************************
+ *		log in page
+ ***************************/
+
+.main_content {
+	max-width: 1000px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#login_page {
+	margin: auto;
+	max-width: 500px;
+	max-height: 500px;
+}
+
+#login_page a {
+	display: block;
+	margin: auto
+}
+
+.login_form {
+	margin: auto;
+}
+
+.login_page_table {
+	background-color: white;
+	margin: auto;
+	padding: 40px;
+}
+
+.username {
+	text-align: left;
+}
+
+/**************************
+			lobby 
+***************************/
+
+#menu_bar {
+	width: 90%;
+	height: 20px;
+	padding: 5px;
+	margin: 5px;
+	background-color: dimgray;
+}
+
+#gamelist_lobby {
+	width: 90%;
+	height: 55%;
+	margin: 5px;
+}
+
+#open_rooms {
+	display: block;
+	float: left;
+	width: 80%;
+	height: 100%;
+	margin-right: 2%;
+	background-color:cadetblue;
+}
+
+.game_room {
+	display: inline-block;
+	width: 150px;
+	height: 100px;
+	padding: 5px;
+	margin: 5px;
+	border: 2px black solid;
+	background-color: mintcream;
+}
+
+#online_users {
+	display: inline-block;
+	font: 20px Impact;
+	width: 18%;
+	height: 100%;
+	background-color: green;
+}
+
+.room_options {
+	display: inline-block;
+	width: 40px;
+	height: 100%;
+}
+
+.participants {
+	display: inline-block;
+}
+
+.participants li {
+	list-style-type: none;
+}
+
+.delete_room {
+	background: orangered;
+	border: none;
+}
+
+.start_game hover{
+	background: lawngreen;
+	border: none;
+}
+
+/**************************	
+			chat 
+***************************/
+
+#chat_box {
+	z-index: 1;
+	position: fixed;
+	bottom: 0;
+	right: 0;
+	width: 350px;
+	height: 180px;
+	margin: auto;
+}
+
+#chat_messages {
+	position: absolute;
+	display: inline-block;
+	list-style-type: none;
+	width: 100%;
+	height: 145px;
+	background:antiquewhite;
+	overflow-y: auto;
+	border: 2px black solid;
+}
+
+#chat_messages li {
+	padding: 2px 2px;
+}
+
+#chat_messages li:nth-child(odd){
+	background: lightgrey;
+}
+
+#chat_input_area {
+	position: absolute;
+	display: inline-block;
+	bottom: 0; 
+	background: #000; 
+	width: 250px; 
+	height: 25px;
+	padding: 5px;
+}
+
+#chat_input_area form input {
+	 width: 70%; 
+	 margin-right: 5px; 
+}
+
+.chat_input_button {
+	width: 50px;
+	height: 25px;
+	background: deepskyblue; 
+	border: none; 
+	padding: 5px;
+}
+
+#chat_right {
+	position: absolute;
+	display: inline-block;
+	bottom: 0;
+	right: 0;
+}
+
+/**************************	
+			in game 
+***************************/
+/*
+*	html components
+*/
+
+#game_board {
+	position: fixed;
+	max-width: 100%;
+	height: 100%;
+	left: 0;
+	top: 0;
+	overflow: auto;
+}
+
+#opponent_board_area {
+	height: 80px;
+	width: 80%;
+}
+
+#game_info {
+	display: inline-block;
+	margin-left: 5px;
+}
+
+#status_bar {
+	display: inline-block;
+	text-align: center;
+	width: 400px;
+	height: 20px;
+	padding: 2px;
+	background: white;
+	border: 2px solid black;
+}
+
+#tie_break_track {
+	display: inline-block;
+	padding: 2px;
+}
+
+.status_bar--turn {
+	margin-right: 5px;
+}
+
+.status_bar--phase {
+	width: 100px;
+}
+
+.status_bar--text {
+	margin-left: 5px;
+}
+
+.main_board_table {
+	table-layout: fixed;
+	width: 100%;
+
+}
+.player_board {
+	display: inline-block;
+	margin: 5px;
+	width: 160px;
+	height: 50px;
+	padding: 3px;
+	border: 2px black solid;
+	border-radius: 5px;
+}
+
+.lower_opponent_board {
+	display: inline-block;
+	width: 100px;
+	height: 50px;
+	margin: 5px;
+	padding: auto;
+	border: 2px black solid;
+	border-radius: 5px;
+}
+
+.player_name, .player_money {
+	display: inline-block;
+	margin: 3px;
+}
+
+#goods {
+	height: 100px;
+}
+
+.goods {
+	width: 15%;
+	height: 100px;
+}
+
+#tool_lookup {
+	width: 400px;
+	height: 280px;
+	z-index: 1;
+	position: fixed;
+	top: 200px;
+	right: -420px;
+	transition: 0.3s;
+	background-color: black;
+	padding: 5px;
+}
+
+#time_token_area {
+	width: 100%;
+	height: 50px;
+}
+
+#my_name {
+	text-align: center;
+}
+
+#my_area {
+	position: relative;
+	display: inline-block;
+}
+
+#my_board_area {
+	display: inline-block;
+}
+
+#my_board {
+	width: 450px;
+	height: 180px;
+	padding: 2px;
+	border: 2px black solid;
+}
+
+#my_left_board {
+	display: inline-block;
+	width: 130px;
+	height: 175px;
+	border: 2px black solid;
+	margin: auto;
+}
+
+#my_left_board_table {
+	width: 100%;
+}
+
+#my_right_board{
+	display: inline-block;
+	width: 305px;
+	height: 175px;
+	border: 2px black solid;
+	margin: auto;
+}
+
+#my_bonus1, #my_bonus2, #my_bonus3 {
+	text-align: center;
+}
+
+#button_area {
+	position: absolute;
+	top: 0;
+	width: 450px;
+	height: 50px;
+	padding: 2px;
+	display: inline-block;
+	border: 2px black solid;
+	border-radius: 5px;
+}
+
+#achievement_area {
+	text-align: center;
+	position: relative;
+	display: inline-block;
+	width: 450px;
+	height: 120px;
+	border: 2px black solid;
+}
+
+#achievement_area--large {
+	display: inline-block;
+	position: fixed;
+	z-index: 1;
+	bottom: -350px;
+	right: 0;
+	transition: 0.3s;
+	height: 280px;
+	background-color: black;
+	padding: 20px 5px 5px 5px;
+}
+
+#notification {
+	visibility: hidden;
+    min-width: 250px;
+    margin-left: -125px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 2px;
+    padding: 16px;
+    position: fixed;
+    z-index: 2;
+    left: 50%;
+    bottom: 30px;
+}
+
+#notification.show {
+	visibility: visible;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+@keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes fadeout {
+    from {bottom: 30px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
+}
+
+.icon {
+	width: 30px;
+	height: 30px;
+}
+
+.time_track_image {
+	width: 85%;
+	height: 20%;
+	margin: auto;
+	border: 1px black solid;
+}
+
+#my_number_played_cards {
+	width: 25%;
+	height: 20%;
+	border: 1px black solid;
+	margin: auto;
+}
+
+.player_hand {
+	width: 100%;
+	height: 60px;
+	border: 1px black solid;
+}
+
+.player_vase {
+	width: 100%;
+	height: 50px;
+	border: 1px black solid;
+	overflow: hidden;
+}
+
+.player_vase--opponent {
+	width: 120px;
+	height: 19px;
+	padding: 2px;
+}
+
+.time_token_drop {
+	width: 30px;
+	height: 30px;
+	padding: 1px;
+	border: 2px black dotted;
+	border-radius: 5px;
+	margin: auto;
+}
+
+.time_token_drop--highlight {
+	border-color: yellow;
+}
+
+.button--submit {
+	border-style: none;
+	width: 80px;
+	height: 40px;
+	padding: 5px;
+	margin: 2px;
+	background-color: black;
+	color: white;
+}
+
+.button--pass {
+	border-style: none;
+	width: 80px;
+	height: 40px;
+	padding: 5px;
+	margin: 2px;
+	background-color: white;
+	color: limegreen;
+}
+
+/*
+*	game components
+*/
+
+.tie_break_token {
+	display: inline-block;
+	text-align: center;
+	width: 20px;
+	height: 20px;
+	margin: 2px;
+	border-radius: 50%;
+	border: 1px solid black;
+}
+
+.shop_image {
+	width: 180px;
+	height: 130px;
+}
+
+.empty_vase {
+	display: inline-block;
+	margin: 3px;
+	width: 40px;
+	height: 40px;
+}
+
+.money1{
+	background-color: #8C7853;
+}
+
+.money2 {
+	background-color: silver;
+}
+
+.money3{
+	background-color: gold;
+}
+
+.money, .flower1, .flower2, .flower3, .tool {
+	display: inline-block;
+	border: 1px black solid;
+	margin: 2px;
+	width: 40px;
+	height: 40px;
+}
+
+.money:hover, .flower1:hover, .flower2:hover, .flower3:hover, .flower_card:hover, .tool:hover, .button:hover, .time_token:hover{
+	opacity: 0.5;
+}
+
+.money {
+	color: black;
+	border-radius: 50%;
+}
+
+.tool--large {
+	display: inline-block;
+	margin: 2px;
+	width: 60px;
+	height: 60px;
+}
+
+.icon--small {
+	width: 15px;
+	height: 15px;
+	margin: 1px;
+}
+
+.card_icon {
+	width: 15px;
+	height: 15px;
+}
+
+.time_token {
+	display: inline-block;
+	width: 16px;
+	height: 16px;
+	padding: 5px;
+	margin: 2px;
+	text-align: center;
+	border: 1px black solid;
+}
+
+.achievement_token {
+	display: inline-block;
+	width: 8px;
+	height: 8px;
+	margin: 2px;
+	text-align: center;
+	border: 1px black solid;
+}
+
+.flower_card {
+	display: inline-block;
+	width: 60px;
+	height: 40px;
+	margin: 2px;
+	padding-top: 3px;
+	background-color: purple;
+	border: 2px black solid;
+}
+
+.flower_icon {
+	width: 15px;
+	height: 15px;
+}
+
+.quality_symbol {
+	text-align: center;
+	display: inline-block;
+	width: 15px;
+	height: 15px;
+	background-color: white;
+	color: black;
+}
+
+.score_symbol {
+	display:inline-block;
+	width: 15px;
+	height: 15px;
+	border-radius: 50%;
+	background-color: black;
+	color: white;
+}
+
+.achievement_card {
+	display: inline-block;
+	width: 60px;
+	height: 90px;
+	margin: 1px;
+	border: 3px solid transparent;
+}
+
+.achievement_card--large {
+	width: 180px;
+	height: 270px;
+	margin: 3px;
+}
+
+.achievement_card--claimed{
+	opacity: 0.3;
+}
+
+.button--expand_achievement{
+	border: none;
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 60px;
+	height: 20px;
+	margin: 2px;
+	color: white;
+	background-color: brown;
+}
+
+.button--expand_tool, .button--expand_opponent_board{
+	border: none;
+	position: absolute;
+	width: 60px;
+	height: 20px;
+	color: white;
+	background-color: brown;
+	margin: 2px;
+}
+
+@keyframes blink { 
+   50% { opacity : 0.5; } 
+}
+
+.loader {
+    border: 10px solid #f3f3f3;
+    border-top: 10px solid #3498db;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.active {
+	animation: blink .5s step-end infinite alternate;
+}
+
+.chosen {
+	border: red dotted;
+}
+
+/*
+*	gamelog 
+*/
+
+#gamelog_window {
+	z-index: 1;
+	display: none;
+	position: fixed;
+	width: 350px;
+	right: 0;
+	top: 0;
+	border: black 2px solid;
+	background: white;
+}
+
+#gamelog {
+	position: absolute;
+	width: 350px;
+	height: 80px;
+	overflow-y: auto;
+	background: white;
+	border: black 2px solid;
+}
+
