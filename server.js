@@ -195,17 +195,20 @@ io.on('connection', function(socket){
       }
     }
 
-    // the faster, the better!
+    // reward faster player
     if(correct_players.length > 0){
       correct_players.sort(function(first, second){
         return first[1] - second[1]
       });
-      var fastest_time = correct_players[0][1]
+      var fastest_time = 0
       // for solo mode, start from 0
       if(socket.gameState.solo)
-        fastest = socket.gameState.round_start_time
+        fastest_time = socket.gameState.round_start_time
+      else
+        fastest_time = correct_players[0][1]
       for (cp in correct_players){
-        // 1 second late (1000 millisecond) = 10 points off
+        // faster one gets 100 points
+        // 1 point of for each 0.1 seconds behind the fastest
         var bonus = 100 + Math.floor((fastest_time - correct_players[cp][1])/100);
         socket.gameState.player_scores[correct_players[cp][0]] += bonus
       }
