@@ -1,3 +1,4 @@
+const { SSL_OP_NETSCAPE_REUSE_CIPHER_CHANGE_BUG } = require('constants');
 var express = require('express');
 var app = express();
 var server = require('http').createServer(app);
@@ -34,10 +35,9 @@ var waitingUsers = {};
 io.on('connection', function(socket){
   var addedUser = false;
 
-  /* debuggin!
-  socket.onAny((event, ...args) => {
+/*   socket.onAny((event, ...args) => {
     console.log(event, args);
-  });*/
+  }); */
 
   socket.on('add user', function(data) {
     addedUser = true;
@@ -74,6 +74,7 @@ io.on('connection', function(socket){
       }
       
       socket.gameState = {
+        'theme': data.theme,
         'difficulty': data.difficulty,
         'shuffle': data.shuffle,
         'round_length': data.round_length,
@@ -82,13 +83,13 @@ io.on('connection', function(socket){
         'round_start': 0,
         'players': players, // automatically add all active players to the game
         'player_scores': player_scores,
-        'flowers': [],
+        'dice': [],
         'round_answer': -1,
         'answered_players': {}
       }
       isRoomActive = true;
       io.emit('new game', socket.gameState)
-      setTimeout(newRound, 5000)
+      newRound()
     }
   });
 
@@ -101,13 +102,15 @@ io.on('connection', function(socket){
     if (!(data.userID in socket.gameState.players))
       return;
 
-    socket.gameState.answered_players[data.userID] =
-    {
+    d = new Date()
+    socket.gameState.answered_players[data.userID] = {
       'answer': data.answer,
-      'time': data.time
+      'time': d.getTime(),
+      'round_score': 0
     }
+    
     io.emit('update client game state', socket.gameState)
-    io.emit('update answers', data)
+    io.emit('update answers', data) // pass on the small data, not the whole state
     if (Object.keys(socket.gameState.answered_players).length == Object.keys(socket.gameState.players).length)
       roundEnd()
   });
@@ -116,16 +119,21 @@ io.on('connection', function(socket){
     clearTimeout(socket.timeOut)
   });
 
+  socket.on('abort', function(){
+    io.emit('end round', socket.gameState)
+    gameEnd()
+  })
+
   /*
   helpers
   */
 
   function newRound(){
-    dice_pool=[
+    var dice_pool=[
         [0,1,2], [0,1,3], [0,2,3], [1,2,3]
     ]
-    dice_set = []
-    diff = parseInt(socket.gameState.difficulty)
+    var dice_set = []
+    var diff = parseInt(socket.gameState.difficulty)
     switch(diff){
         case 1: 
           var t = Math.floor(Math.random()*3)
@@ -138,45 +146,66 @@ io.on('connection', function(socket){
         default: dice_set = [0,0,0,1,1,1,2,2,2,3,3,3]; break; // for advanced mode
     }
 
-    flowers = []
-    flower_ans = []
+    var dice = []
+    var dice_ans = []
     for (i = 0; i < dice_set.length; i++){
-        flower = dice_pool[dice_set[i]][Math.floor(Math.random()*3)]
-        flowers.push({'color':dice_set[i], 'type':flower})
-        flower_ans.push(flower)
+        die = dice_pool[dice_set[i]][Math.floor(Math.random()*3)]
+        dice.push({'color':dice_set[i], 'type':die})
+        dice_ans.push(die)
     }
 
     /* find solution (before shuffling if needed) */
     if (diff == 1)
-      answer = get_answer(flower_ans.slice(0,3))
+      answer = get_answer(dice_ans.slice(0,3))
     else if (diff == 2){
-      a1 = get_answer(flower_ans.slice(0,3))
-      newf = flower_ans.slice(3,5)
+      a1 = get_answer(dice_ans.slice(0,3))
+      newf = dice_ans.slice(3,5)
       newf.push(a1)
       answer = get_answer(newf)
     }
     else if (diff == 3){
-      a1 = get_answer(flower_ans.slice(0,3))
-      a2 = get_answer(flower_ans.slice(3,6))
-      a3 = get_answer(flower_ans.slice(6,9))
+      a1 = get_answer(dice_ans.slice(0,3))
+      a2 = get_answer(dice_ans.slice(3,6))
+      a3 = get_answer(dice_ans.slice(6,9))
       answer = get_answer([a1, a2, a3])
     }
     else
       answer = -1 // level 4: to be added later
 
     if (socket.gameState.shuffle)
-        shuffleArray(flowers)
+        shuffleArray(dice)
 
     socket.gameState.round++
-    socket.timeOut = setTimeout(roundEnd, 10000)
-    socket.gameState.flowers = flowers
+    socket.gameState.answered_players = {}
+    socket.timeOut = setTimeout(roundEnd, 15000) // 5 seconds cool-down + 10 seconds gameplay
+    socket.gameState.dice = dice
     socket.gameState.round_answer = answer
-    d = new Date()
+    var d = new Date()
     socket.gameState.round_start_time = d.getTime()
     io.emit('new round', socket.gameState)
   }
 
   function roundEnd(){
+    clearTimeout(socket.timeOut)
+    scoring()
+    
+    if (socket.gameState.round == socket.gameState.round_length) {
+      io.emit('end round', socket.gameState);
+      gameEnd()
+    }
+    else {
+      io.emit('end round', socket.gameState);
+      newRound()
+    }
+  }
+
+  function gameEnd(){
+    isRoomActive = false;
+    io.emit('end game', socket.gameState)
+    socket.gameState = [];
+  }
+
+  function scoring(){
     // scoring
     correct_answer = socket.gameState.round_answer
     answers = socket.gameState.answered_players
@@ -186,12 +215,15 @@ io.on('connection', function(socket){
     // i.e. still the faster, the better!
     var correct_players = []
     var incorrect_penalty = 0;
-    for (var p in socket.gameState.players){
-      if(p in answers){
-        if (answers[p].answer === correct_answer)
-          correct_players.push([p, answers[p].time])
-        else
-          socket.gameState.player_scores[p] -= 10*(incorrect_penalty++)
+    for (var id in socket.gameState.players){
+      if(id in answers){
+        if (answers[id].answer === correct_answer)
+          correct_players.push([id, answers[id].time])
+        else {
+          penalty = 10*(incorrect_penalty++)
+          socket.gameState.player_scores[id] -= penalty
+          socket.gameState.answered_players[id]['round_score'] = -penalty
+        }
       }
     }
 
@@ -200,8 +232,9 @@ io.on('connection', function(socket){
       correct_players.sort(function(first, second){
         return first[1] - second[1]
       });
+
       var fastest_time = 0
-      // for solo mode, start from 0
+      // for solo mode, start from server time
       if(socket.gameState.solo)
         fastest_time = socket.gameState.round_start_time
       else
@@ -211,26 +244,9 @@ io.on('connection', function(socket){
         // 1 point of for each 0.1 seconds behind the fastest
         var bonus = 100 + Math.floor((fastest_time - correct_players[cp][1])/100);
         socket.gameState.player_scores[correct_players[cp][0]] += bonus
+        socket.gameState.answered_players[correct_players[cp][0]]['round_score'] = bonus
       }
     }
-
-    // reset answers and proceed
-    socket.gameState.answered_players = {}
-    
-    if (socket.gameState.round == socket.gameState.round_length) {
-      io.emit('end round', socket.gameState);
-      setTimeout(gameEnd, 5000)
-    }
-    else {
-      io.emit('end round', socket.gameState);
-      setTimeout(newRound, 5000)
-    }
-  }
-
-  function gameEnd(){
-    isRoomActive = false;
-    io.emit('end game', socket.gameState)
-    socket.gameState = [];
   }
 
   function get_answer(f){

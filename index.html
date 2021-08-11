@@ -18,17 +18,27 @@
 				<div id = "user-info">
 					<input type="text" id="username" value="">
 					<button id="edit-name-button">Edit name</button>
+					<button id="abort-button" hidden>Abort</button>
 					<button id="return-lobby-button" hidden>Return to lobby</button>
 				</div>
 				<div class = button-container>
+					<select id="theme">
+						<option value = 'flower' selected>Flower</option>
+						<option value = 'space'>Space</option>
+						<option value = 'fruit'>Fruit</option>
+						<option value = 'animal'>Animal</option>
+						<option value = 'suit'>Card suit</option>
+						<option value = 'element'>Element</option>
+						<option value = 'snow'>Snow</option>
+					</select>
 					<input type="checkbox" id="shuffle" name="shuffle" value=0>
 						<label for="shuffle">Shuffle</label>
 					</input>
 					<select id="difficulty">
 						<option value = 1>Easy (1 color, 3 dice)</option>
-						<option value = 2 selected = "selected">Medium (2 colors, 5 dice)</option>
+						<option value = 2 selected>Medium (2 colors, 5 dice)</option>
 						<option value = 3>Hard (3 colors, 9 dice)</option>
-						<!-- option value = 4>Chaos (4 colors, 12 dice)</option-->
+						<!-- option value = 4>Chaos (4 colors, 12 dice)</option -->
 					</select>
 					<select id="round-length">
 						<option value = 1>One-shot (1 round)</option>
@@ -39,6 +49,7 @@
 						Start a new game!
 					</button>
 				</div>
+				<br/>
 				<div class="timercontainer">
 					<div class="progress_container" style="display:block">
 						<div class="progress_bar">
@@ -46,11 +57,11 @@
 						</div>
 					</div>
 				</div>
+				<br/>
 				<div id = "answer-zone" hidden>
 					<div class = "answer-button-container">
 						<div>
 							<button class = "answer-button" value = 1>
-								<img src = "img/1.png">
 							</button>
 						</div>
 						<div class = 'answered-players' value = 1></div>
@@ -58,7 +69,6 @@
 					<div class = "answer-button-container">
 						<div>
 							<button class = "answer-button" value = 2>
-								<img src = "img/2.png">
 							</button>
 						</div>
 						<div class = 'answered-players' value = 2></div>
@@ -66,7 +76,6 @@
 					<div class = "answer-button-container">
 						<div>
 							<button class = "answer-button" value = 3>
-								<img src = "img/3.png">
 							</button>
 						</div>
 						<div class = 'answered-players' value = 3></div>
@@ -74,13 +83,13 @@
 					<div class = "answer-button-container">
 						<div>
 							<button class = "answer-button" value = 4>
-								<img src = "img/4.png">
 							</button>
 						</div>
 						<div class = 'answered-players' value = 4></div>
 					</div>
 				</div>
-				<div id = "dice-zone">
+				<br/>
+				<div id = 'dice-zone'>
 				</div>
 			</div>
 			<div id = "users-area">
